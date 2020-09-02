@@ -1,54 +1,55 @@
-import React, { useState } from 'react';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink,
+} from 'react-router-dom';
+import Tab from './components/Tab';
+import Home from './pages/Home';
+import About from './pages/About';
+import Features from './pages/Features';
 import './App.css';
-
-const Tab = ({ children }) => {
-  const [highlightStyle, setHighlightStyle] = useState({ left: 0, opacity: 0 });
-
-  const handleMoveHighlight = (e) => {
-    // Update highlight style
-    setHighlightStyle({
-      left: e.nativeEvent.layerX - 150,
-    });
-  };
-
-  const handleHideHighlight = (e) => {
-    setHighlightStyle({
-      opacity: 0,
-      left: e.nativeEvent.layerX - 150,
-    });
-  };
-
-  return (
-    <div
-      className="tab"
-      onMouseOut={handleHideHighlight}
-      onMouseMove={handleMoveHighlight}
-    >
-      <div className="hightlight" style={highlightStyle} />
-      {children}
-    </div>
-  );
-};
 
 const App = () => {
   return (
-    <div className="app">
-      <div className="browser">
-        <div className="tabs">
-          <Tab>
-            <a>Home</a>
-          </Tab>
-          <Tab>
-            <a>About</a>
-          </Tab>
-          <Tab>
-            <a>Features</a>
-          </Tab>
-        </div>
+    <Router>
+      <div className="app">
+        <div className="browser">
+          <div className="tabs">
+            <Tab>
+              <NavLink exact to="/" activeClassName="is-active">
+                Home
+              </NavLink>
+            </Tab>
+            <Tab>
+              <NavLink to="/about" activeClassName="is-active">
+                About
+              </NavLink>
+            </Tab>
+            <Tab>
+              <NavLink to="/features" activeClassName="is-active">
+                Features
+              </NavLink>
+            </Tab>
+          </div>
 
-        <div className="viewport">Pages Go Here</div>
+          <div className="viewport">
+            <Switch>
+              <Route path="/about">
+                <About />
+              </Route>
+              <Route path="/features">
+                <Features />
+              </Route>
+              <Route exact path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </div>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 };
 
